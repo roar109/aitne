@@ -2,9 +2,11 @@ package com.github.roar109.launcher.provider;
 
 import com.github.roar109.launcher.rest.BinanceTicker;
 import com.github.roar109.launcher.rest.BitsoTicker;
+import com.github.roar109.launcher.rest.HuobiTicker;
 import com.github.roar109.launcher.rest.TickerExchange;
 import com.github.roar109.launcher.rest.dto.BinancePriceTicker;
 import com.github.roar109.launcher.rest.dto.BitsoTickerResponse;
+import com.github.roar109.launcher.rest.dto.HuobiTickerResponse;
 import com.github.roar109.launcher.rest.dto.TickerResponse;
 import retrofit2.Call;
 import retrofit2.Response;
@@ -45,6 +47,16 @@ public class ExchangeProvider {
             }else{
                 throw new IllegalStateException(restResponse.errorBody().string());
             }
+        }else if("HUOBI".equals(exchangeAlias)){
+            HuobiTicker exchange =  getHuobiExchange();
+            Call<HuobiTickerResponse> exchangeCall = exchange.ticker(currency);
+            Response<HuobiTickerResponse> restResponse = exchangeCall.execute();
+
+            if(restResponse.isSuccessful()){
+                return new TickerResponse(restResponse.body().getTick().getAsk()[0].doubleValue(), currency);
+            }else{
+                throw new IllegalStateException(restResponse.errorBody().string());
+            }
         }
 
         return null;
@@ -66,5 +78,14 @@ public class ExchangeProvider {
                 .build();
 
         return retrofit.create(BinanceTicker.class);
+    }
+
+    public HuobiTicker getHuobiExchange(){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl("https://api.huobi.pro/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build();
+
+        return retrofit.create(HuobiTicker.class);
     }
 }

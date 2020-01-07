@@ -44,26 +44,26 @@ public class CurrencyChangeTicketJob implements Job {
             switch (type) {
                 case DECRESES:
                     if (BigDecimal.valueOf(lastd).compareTo(calculatedNewPrice) < 0) {
-                        LOG.info(String.format(DECREASE_SUCCESS_MESSAGE, tradPair, percentage, lastd));
+                        LOG.info(String.format(DECREASE_SUCCESS_MESSAGE, tradPair.toUpperCase(), percentage, lastd));
                         Toolkit.getDefaultToolkit().beep();
                         EventBusHolder.instance().getEventBus().post(new DecreaseEvent(tradPair, lastd));
                     } else {
-                        LOG.debug(String.format(DECREASE_FAIL_MESSAGE, tradPair, percentage, basePrice, lastd));
+                        LOG.debug(String.format(DECREASE_FAIL_MESSAGE, tradPair.toUpperCase(), percentage, basePrice, lastd));
                     }
                     break;
                 case INCREASES:
                     if (BigDecimal.valueOf(lastd).compareTo(calculatedNewPrice) > 0) {
-                        LOG.info(String.format(INCREASE_SUCCESS_MESSAGE, tradPair, percentage, lastd));
+                        LOG.info(String.format(INCREASE_SUCCESS_MESSAGE, tradPair.toUpperCase(), percentage, lastd));
                         Toolkit.getDefaultToolkit().beep();
-                        EventBusHolder.instance().getEventBus().post(new IncreaseEvent(tradPair, lastd));
+                        EventBusHolder.instance().getEventBus().post(new IncreaseEvent(tradPair.toUpperCase(), lastd));
                     } else {
-                        LOG.debug(String.format(INCREASE_FAIL_MESSAGE, tradPair, percentage, basePrice, lastd));
+                        LOG.debug(String.format(INCREASE_FAIL_MESSAGE, tradPair.toUpperCase(), percentage, basePrice, lastd));
                     }
                     break;
             }
 
         } catch (Exception e) {
-            LOG.error(String.format("Failure calling exchange %s with trade pair %s", tradPair, exchangeAlias));
+            LOG.error(String.format("Failure calling exchange %s with trade pair %s", tradPair.toUpperCase(), exchangeAlias.toUpperCase()));
             LOG.error(e.getMessage(), e);
         }
     }

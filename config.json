@@ -1,12 +1,11 @@
 {
-  "tickers":[
-    {
-      "pair":"xrp_mxn",
-      "porcentage":0.1,
-      "baseline_value":23.6,
-      "increase_or_decrease":1,
-	  "exchange_alias":"BITSO"
-    }
-  ],
-  "eventsEnabled":false
+	"tickers" : [{
+			"pair" : "xrp_mxn",
+			"porcentage" : 0.1,
+			"baseline_value" : 19,
+			"increase_or_decrease" : 1,
+			"exchange_alias" : "BITSO"
+		}
+	],
+	"eventsEnabled" : false
 }
